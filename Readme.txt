@@ -6,4 +6,4 @@ Instrucciones para compilar el programa:
 
 Para ver un ejemplo de uso del programa, puede ver el video https://youtu.be/9HzwwEmLi70 montado en youtube.
 
-En el caso de RSA, copiar las clases a un proyecto de java y correr desde la clase Rsa.java.
+En el caso de RSA, copiar las clases (nombreArrayList, procedimientos, Rsa y texto) a un proyecto de java y correr desde la clase Rsa.java.
