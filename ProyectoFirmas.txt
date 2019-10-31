@@ -1,0 +1,448 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+class Menu {
+    
+    static MetodosAfin mA = new MetodosAfin();
+    
+    public static void main(String[] args) {
+        
+        try {
+            
+            if(args.length==0){
+		System.out.println("");
+                System.out.println("**********MENU**********");
+                System.out.println("");         
+                System.out.println("Sintaxis: java Menu <criptoanalisis> <opcion>");
+                System.out.println("");
+                System.out.println("<criptoanalisis>: ");
+                System.out.println("  -af: Criptoanalisis cifrado Afin");
+                //System.out.println("  -rs: Criptoanalisis de RSA");
+                System.out.println("");
+                System.out.println("<opcion>:");
+                System.out.println("  -o:  Para consultar las opciones del algoritmo seleccionado");
+                System.out.println("");
+                System.out.println("Sintaxis ejemplo: ");
+                System.out.println("  java Menu -af -o  Para consultar las opciones de ciprtonalisis Afin");
+                //System.out.println("  java Menu -rs -o   Para consultar las opciones de criptoanalisis de RSA");
+                System.out.println("");
+            }else if(args[0].equals("-af")){
+                if(args.length==2&&args[1].equals("-o")){
+                    mA.ayudaAfin();
+                }else if(args.length==5&&args[1].equals("-c")){
+		    long Tinicio=System.currentTimeMillis();
+                    mA.validaAB(args[3], args[4]);//a, b
+                    mA.cifra(mA.leeArchivoTXT(args[2]), args[3], args[4], mA.nombreArchivo(args[2]));
+		       long Tfin=System.currentTimeMillis();
+		       double Ttotal=(double)((Tfin-Tinicio)/1000.0);
+                       System.out.println("Proceso de cifra finalizado con exito");
+		       System.out.println("Tiempo de ejecucion en segundos: "+Ttotal+"(s)");
+                       
+                }else if(args.length==3&&(args[2].equals("1")||args[2].equals("2"))){
+		       long Tinicio=System.currentTimeMillis();
+                       mA.descifra(mA.calculaEcuacion(mA.asignaLetras(mA.cuentaMayores(mA.cuentaFrecuencia(mA.leeArchivoTXT(args[1])))), Integer.parseInt(args[2])), mA.leeArchivoTXT(args[1]), mA.nombreArchivo(args[1]));
+		       long Tfin=System.currentTimeMillis();
+		       double Ttotal=(double)((Tfin-Tinicio)/1000.0);
+                       System.out.println("Proceso de ciptoanálisis finalizado con exito");
+		       System.out.println("Tiempo de ejecucion en segundos: "+Ttotal+"(s)");
+
+                }
+            }
+            } catch (Exception e) {
+        }
+        
+    }
+    
+}
+
+class MetodosAfin {
+
+    public void ayudaAfin() {
+        
+            System.out.println("");
+            System.out.println("OPCIONES DE CRIPTOANALIIS DE CIFRADO AFIN");
+            System.out.println("Sintaxis para realizar el cirptoanalsis: ");
+            System.out.println("----    java Menu -af <rutaArchivo> <opcion>    ----");
+            System.out.println("");
+            System.out.println("Sintaxis para realizar la cifra Afin: ");
+            System.out.println("----    java Menu -af -c <rutaArchivo> <a> <b>  ----");
+            System.out.println("");
+            System.out.println(" <rutaArchivo>: Ruta del archivo a procesar");
+            System.out.println(" <opcion> :");
+            System.out.println("  Opcion <1>: Realiza el analisis con la letra E como mayor frecuencia");
+            System.out.println("  Opcion <2>: Realiza el analisis con la letra A como mayor frecuencia");
+            System.out.println("");
+            System.out.println(" <a>: Es la constante de decimación para cifrar");
+            System.out.println(" <b>: Es la constante de desplazamiento para cifrar");
+            System.out.println("");
+            System.out.println("El archivo cifrado o descifrado se creará con el nombre <nombreArchivo>.cif o <nombreArchivo>.dec");
+            System.out.println("");
+            
+    }
+    
+    public void validaAB(String a, String b){
+        
+        int an=0, bn=0;
+        
+        try {
+            
+            an=Integer.parseInt(a);
+            bn=Integer.parseInt(b);
+            
+        } catch (NumberFormatException e) {
+            System.out.println("Números no validos de a(decimación) o b(desplazamiento)");
+            System.exit(0);
+        }
+        
+    }
+
+    public String leeArchivoTXT(String archivo) {
+        
+        String bfRead="", texto="";
+        
+        try {
+            BufferedReader bf = new BufferedReader (new InputStreamReader(new FileInputStream(archivo), "ISO-8859-1"));
+            
+            while ((bfRead = bf.readLine())!=null){
+                texto=bfRead;
+            }
+            
+        } catch (Exception e) {
+            
+            System.err.println("**Error > No se encontro el archivo en la ruta especificada**");
+            System.exit(0);
+        }
+        
+        return texto;    
+    
+    }
+
+    public String nombreArchivo(String ruta) {
+        
+        String nom="";
+        File fichero=new File(ruta);
+        
+        int pos=fichero.getName().lastIndexOf(".");
+        
+	if(pos>0){
+            nom=fichero.getName().substring(0, pos);
+        }else{
+            nom=fichero.getName();
+        }
+        
+        return nom;
+    }
+
+    public void cifra(String texto, String al, String bl, String nombreArchivo){
+        
+        char [] textocif = texto.toCharArray();
+        int valLetra=0;
+        String patron1="[A-N]", patron2="[O-Z]";     
+        int formula=0;
+        int a=Integer.parseInt(al);
+        int b=Integer.parseInt(bl);
+        
+        String alfabeto= "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+        
+        for(int cont=0; cont<textocif.length; cont++){
+                      
+            if(String.valueOf(textocif[cont]).matches(patron1)){
+                
+                valLetra=(int)textocif[cont]-65;
+                formula= (a * valLetra + b) % 27;
+                textocif[cont]=alfabeto.charAt(formula);
+                
+            }else if(String.valueOf(textocif[cont]).matches(patron2)){
+                valLetra=(int)textocif[cont]-65+1;
+                formula= (a * valLetra + b) % 27;
+                textocif[cont]=alfabeto.charAt(formula);
+                
+            }else if(String.valueOf(textocif[cont]).equals("Ñ")){
+                valLetra=14;
+                formula= (a * valLetra + b) % 27;
+                textocif[cont]=alfabeto.charAt(formula);
+            }              
+        }
+        
+        creaArchivo(textocif, nombreArchivo+".cif");
+               
+    }
+    
+    public int [] cuentaFrecuencia(String cifrado) {
+        
+        char [] arreglo = cifrado.toCharArray();
+        
+        int valLetra=0, a=0, b=0, c=0, d=0, e=0, f=0, g=0,
+                h=0, i=0, j=0, k=0, l=0, m=0, n=0, ñ=0, o=0, p=0,
+                q=0, r=0, s=0, t=0, u=0, v=0, w=0, x=0, y=0, z=0;
+        String patron1="[A-N]", patron2="[O-Z]";
+                
+        for(int cont=0; cont<arreglo.length; cont++){
+                      
+            if(String.valueOf(arreglo[cont]).matches(patron1)){
+                valLetra=(int)arreglo[cont]-65;
+            }else if(String.valueOf(arreglo[cont]).matches(patron2)){
+                valLetra=(int)arreglo[cont]-65+1;
+            }else if(String.valueOf(arreglo[cont]).equals("Ñ")){
+                valLetra=14;
+            }      
+                      
+            switch(valLetra){
+                
+                case 0: a=a+1; break;
+                case 1: b=b+1; break;
+                case 2: c=c+1; break;
+                case 3: d=d+1; break;
+                case 4: e=e+1; break;
+                case 5: f=f+1; break;
+                case 6: g=g+1; break;
+                case 7: h=h+1; break;
+                case 8: i=i+1; break;
+                case 9: j=j+1; break;
+                case 10: k=k+1; break;
+                case 11: l=l+1; break;
+                case 12: m=m+1; break;
+                case 13: n=n+1; break;
+                case 14: ñ=ñ+1; break;
+                case 15: o=o+1; break;
+                case 16: p=p+1; break;
+                case 17: q=q+1; break;
+                case 18: r=r+1; break;
+                case 19: s=s+1; break;
+                case 20: t=t+1; break;
+                case 21: u=u+1; break;
+                case 22: v=v+1; break;
+                case 23: w=w+1; break;
+                case 24: x=x+1; break;
+                case 25: y=y+1; break;
+                case 26: z=z+1; break;
+                
+            }
+        }
+        
+        int [] numeros={a,b,c,d,e,f,g,h,i,j,k,l,m,n,ñ,o,p,q,r,s,t,u,v,w,x,y,z};
+        
+        return numeros;
+
+        
+    }
+
+    public int [] cuentaMayores(int[] numeros) {
+        
+        
+        int mayor1=numeros[0], pos1=0;
+        int [] mayores = new int[4];
+        
+        for(int i=0; i<numeros.length;i++){
+            if(numeros[i]>mayor1){
+                mayor1=numeros[i];
+                pos1=i;
+            }
+        }
+        
+        mayores[0]=mayor1;
+        mayores[1]=pos1;
+        
+        numeros[pos1]=-1;
+        
+        int mayor2=numeros[0], pos2=0;
+        for(int j=0; j<numeros.length;j++){
+            if(numeros[j]>mayor2){
+                mayor2=numeros[j];
+                pos2=j;
+            }
+        }
+        
+        mayores[2]=mayor2;
+        mayores[3]=pos2;
+        
+        return mayores;    
+    }
+
+    public String [] asignaLetras(int[] mayores) {
+        
+        String [] letrasMayorFre = new String [2];
+        String [] letrasFrecuencia1 = new String[2];
+        String [] letrasFrecuencia2 = new String[2];
+
+        letrasFrecuencia1[0]=String.valueOf(mayores[0]);
+        letrasFrecuencia1[1]=String.valueOf(busqueLetra(mayores[1]));
+        
+        letrasFrecuencia2[0]=String.valueOf(mayores[2]);
+        letrasFrecuencia2[1]=String.valueOf(busqueLetra(mayores[3]));
+
+	letrasMayorFre[0]=letrasFrecuencia1[1];
+	letrasMayorFre[1]=letrasFrecuencia2[1];
+
+        System.out.println("Letra con mayor frecuencia: "+letrasFrecuencia1[1]+" -> Numero de repeticiones: "+letrasFrecuencia1[0]);
+        System.out.println("Segunda letra con mayor frecuencia: "+letrasFrecuencia2[1]+ " -> Numero de repeticiones: "+letrasFrecuencia2[0]);
+        
+        return letrasMayorFre;
+    }
+    
+    public String busqueLetra(int letras) {
+        
+        String letra="";
+        String Alfabeto="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+        
+        return letra=String.valueOf(Alfabeto.charAt(letras));
+
+    }
+
+    public int [] calculaEcuacion(String[] letras, int opcion) {
+    
+        String patron1="[A-N]", patron2="[O-Z]", l1=letras[0], l2=letras[1];
+        int valorLetra1=0, valorLetra2=0, resultado=0, valorInverso=0, valorE=4;
+        int [] valora_b= new int[2];
+        
+        
+        if(String.valueOf(l1.charAt(0)).matches(patron1)){
+            valorLetra1=(int) l1.charAt(0)-65;
+        }else if (String.valueOf(l1.charAt(0)).matches(patron2)){
+            valorLetra1=(int) l1.charAt(0)-65+1;
+        }else if(String.valueOf(l1.charAt(0)).equals("Ñ")){
+            valorLetra1=14;
+        }
+        
+        if(String.valueOf(l2.charAt(0)).matches(patron1)){
+            valorLetra2=(int) l2.charAt(0)-65;
+        }else if (String.valueOf(l2.charAt(0)).matches(patron2)){
+            valorLetra2=(int) l2.charAt(0)-65+1;
+        }else if(String.valueOf(l2.charAt(0)).equals("Ñ")){
+            valorLetra2=14;
+        }        
+        
+        for(int x=1; x<27; x++){
+            
+            if((valorE*x)%27==1){
+                valorInverso=x;
+            }
+        }
+        
+        if(valorInverso<0){
+            System.out.println("No fue posible calcular el inverso modular");
+            System.exit(0);
+        }
+        
+        switch (opcion){
+            case 1:
+		System.out.println("Se asume que la letra "+l1+" -> E y "+l2+" -> A");
+                resultado = ((valorLetra1-valorLetra2)*valorInverso)%27;
+                    if(resultado<0){
+                        resultado=resultado+27;
+                    }
+                valora_b[0]=resultado;
+                valora_b[1]=valorLetra2;
+                
+            break;
+            case 2:
+		 System.out.println("Se asume que la letra "+l1+" -> A y "+l2+" -> E");
+                 resultado = ((valorLetra2-valorLetra1)*valorInverso)%27;
+                    if(resultado<0){
+                        resultado=resultado+27;
+                    }
+                valora_b[0]=resultado;
+                valora_b[1]=valorLetra1;
+            break;
+        }
+
+/*        resultado = ((valorLetra1-valorLetra2)*valorInverso)%27;
+             if(resultado<0){
+                resultado=resultado+27;
+             }
+             valora_b[0]=resultado;
+             valora_b[1]=valorLetra2;
+
+	int validaR1=(valora_b[0]*4+valora_b[1])%27;
+
+	if(validaR1!=valorLetra1){
+                resultado = ((valorLetra2-valorLetra1)*valorInverso)%27;
+                    if(resultado<0){
+                        resultado=resultado+27;
+                    }
+                valora_b[0]=resultado;
+                valora_b[1]=valorLetra1;	     	
+	}*/             
+  
+        System.out.println("Constante desplazamiento: "+valora_b[1]);
+        System.out.println("Constante de decimacion : "+valora_b[0]);
+        
+        return valora_b;        
+    
+    }
+
+    public void descifra(int[] valora_b, String texto, String nombreArchivo) {
+        char [] cifrado = texto.toCharArray();
+        int valorLetraCif=0, formula=0, valorInversoA=0;
+        String patron1="[A-N]", patron2="[O-Z]", alfabeto="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+        
+        for(int x=0; x<27; x++){
+	               
+            if((valora_b[0]*x)%27==1){
+                valorInversoA=x;
+            }
+        
+        }
+        
+        for(int i=0; i<cifrado.length;i++){
+            if(String.valueOf(cifrado[i]).matches(patron1)){
+                valorLetraCif=(int) cifrado[i]-65;
+                formula=((valorLetraCif-valora_b[1])*valorInversoA)%27;
+                
+                if(formula<0){
+                    formula=formula+27;
+                }
+                
+                cifrado[i]=(char)(alfabeto.charAt(formula));
+            }else if (String.valueOf(cifrado[i]).matches(patron2)){
+                valorLetraCif=(int) cifrado[i]-65+1;
+                formula=((valorLetraCif-valora_b[1])*valorInversoA)%27;
+
+                if(formula<0){
+                    formula=formula+27;
+                }
+
+                cifrado[i]=(char)(alfabeto.charAt(formula));
+            }else if(String.valueOf(cifrado[i]).equals("Ñ")){
+                valorLetraCif=14;
+                formula=((valorLetraCif-valora_b[1])*valorInversoA)%27;
+                if(formula<0){
+                    formula=formula+27;
+                }
+                cifrado[i]=(char)(alfabeto.charAt(formula));
+            }
+        }
+        creaArchivo(cifrado, nombreArchivo+".dec");
+        
+    }
+
+    public void creaArchivo(char[] texto, String nombreArchivo) {
+        BufferedWriter escribir;
+        
+        try {
+            File file = new File(nombreArchivo);
+            FileWriter filewrite = new FileWriter(file);
+            
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            
+            escribir = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "ISO-8859-1"));
+
+            escribir.write(texto);
+            escribir.flush();
+            escribir.close();
+            
+        } catch (Exception e) {
+            System.out.println("**Error al crear el archivo**");
+        }    
+
+    }    
+    
+}
