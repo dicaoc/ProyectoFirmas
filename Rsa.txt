@@ -1,0 +1,65 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package rsa;
+
+import java.util.ArrayList;
+import static rsa.nombreArrayList.moduloInverso;
+
+/**
+ *
+ * @author Andres Felipe Upegui
+ */
+public class Rsa {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+        
+procedimientos a=new procedimientos(); 
+texto t=new texto();
+//Variables n y e son la clave publica y m es el mensaje
+double n=12125297;
+double e=521;
+double m=106613040;
+/*
+double n=52841;
+double e=7;
+double m=4683;
+
+/*
+double n=66331;
+double e=25;
+double m=16667;
+*/    
+double r;
+//r=a.inicial(n, e, m);
+//se debe cambiar el texto, lo mejor es que solo sea de 3 o 4 caracteres por la logica implementada
+String texto="Hol";
+double valor=0;
+int l=texto.length();
+for(int i=0;i<l;i++){
+char j=texto.charAt(i);
+
+int letra=t.consulta(j+"");
+
+valor=valor+((256^(l-1-i))*j);
+System.out.println("valor de la letra: "+j+"  "+letra+" el valor es: "+valor);
+}
+// se envian los valores a cifrar 
+Double cif=t.cifrar(valor, n, e);
+
+//se envian los valores para iniciar el criptoanalisis, se envian las llaves publicas y el codigo del mensaje cifrado
+r=a.inicial(n, e, cif);
+//1151351.0
+
+
+
+
+        
+    }}
+

@@ -1,0 +1,129 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package rsa;
+import java.util.ArrayList;
+import java.lang.Math;
+import java.math.BigInteger;
+import java.math.BigDecimal;
+/**
+ *
+ * @author Andres Felipe Upegui
+ */
+public class procedimientos {
+ ArrayList<Double> valores1 = new ArrayList();
+ ArrayList<Double> valores2 = new ArrayList();    
+    
+       double inicial(double n,double e,double m){
+           //en este metodo se envia el n y se arman los bloques de n/2 y se empiezan a enviar uno a uno para realizar los calculos
+       double mitad=Math.floor(n/2); 
+       double m1,m2;
+       
+       for(double i=0;i<mitad;i++){
+       m1=i;
+       m2=i+mitad;
+       double r1=procesar(n,m1,m);
+       double r2=procesar(n,m2,m);
+       int res=guardar(r1,r2,i,mitad,e);
+       if(res==1){i=mitad;
+       }
+       
+       }
+       return mitad;
+        }
+       
+    int guardar(double r1,double r2,double i,double mitad,double e){
+        //en este metodo se realiza el guardado de los valores en las listas para su futura consulta
+        int res=0;
+    valores1.add(r1);
+    valores2.add(r2);
+    String v1="";
+    String v2="";
+    v2=consultar(r2,1,mitad);
+    v1=consultar(r1,2,mitad);
+    if (v1.equals("")){}
+    else{
+    
+    Double rr=Double.parseDouble(v1);
+    inverso(rr,i,e);
+    res=1;
+    }
+    if (v2.equals("")){}
+    else{
+    Double rr=Double.parseDouble(v2);
+    inverso(rr,i,e);
+    res=1;
+    }
+    return res;
+    }
+    
+    double inverso(double r1,double r2,double e){
+        //mediante este metodo se realiza el calculo del inverso
+    double inv=0;
+    double x=Math.abs(r1-r2);
+    double x1=mcd(x,e);
+    inv=x/x1;
+    nombreArrayList b=new nombreArrayList();
+
+    inv=b.principal((int)inv,(int)e);
+    System.out.println("La llave privada es: "+inv);
+    return inv;
+    }
+    
+    double mcd(double x,double y){
+        //se envian los dos valores para encontrar el maximo comun divisor
+    double r=1;
+    double max;
+    if(x>=y){max=y;}
+    else{max=x;}
+    for(double i=2;i<=max;i++){
+    if(x%i==0){
+    if(y%i==0){
+    r=i;
+    i=max+1;
+    }
+    }
+    }
+    return r;
+    }
+    
+    String consultar(double r,int l,double mitad){
+        //se envian los valores calculados para buscarlos en las listas de los otros valores calculados con el fin de encontrar el colapso de los valores, cuando se encuentra este valor se envian los dos valores de ambas listas para realizar el analisis.
+        String v="";
+        if(l==1){
+            for(int i=0;i<valores1.size();i++){
+    if(r==valores1.get(i)){
+    v=i+" ";
+    }}}
+        else{
+                for(int i=0;i<valores2.size();i++){
+    if(r==valores2.get(i)){
+    v=i+mitad+"";
+    }    
+                }
+    
+    }
+    
+    return v;
+    }
+    
+    double procesar(double n,double e,double m){
+        //para realizar el calculo de los valores m^i mod n, i es el valor de los bloques que se parte n/2 
+        BigInteger resul = new BigInteger((int)(m)+"");
+        
+        BigInteger n1 = BigDecimal.valueOf(n).toBigInteger();
+        BigInteger e1 = BigDecimal.valueOf(e).toBigInteger();
+    double resultado=0;
+    
+        resultado=Math.pow(m,e)%n;
+        resul=resul.modPow(e1, n1);
+        return resul.doubleValue();
+    }
+    
+    
+
+   
+
+}

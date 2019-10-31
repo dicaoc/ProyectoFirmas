@@ -1,0 +1,307 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package rsa;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+/**
+ *
+ * @author Andres Felipe Upegui
+ */
+public class texto {
+   
+    
+    int consulta(String letra){
+        //Se llena una lista con todos los valores del ascii
+    int valor=0;
+    ArrayList<String> texto1 = new ArrayList();
+   
+    
+    texto1.add(0,"NULL");
+texto1.add(1,"SOH");
+texto1.add(2,"STX");
+texto1.add(3,"ETX");
+texto1.add(4,"EOT");
+texto1.add(5,"ENQ");
+texto1.add(6,"ACK");
+texto1.add(7,"BEL");
+texto1.add(8,"BS");
+texto1.add(9,"HT");
+texto1.add(10,"LF");
+texto1.add(11,"VT");
+texto1.add(12,"FF");
+texto1.add(13,"CR");
+texto1.add(14,"SO");
+texto1.add(15,"SI");
+texto1.add(16,"DLE");
+texto1.add(17,"DC1");
+texto1.add(18,"DC2");
+texto1.add(19,"DC3");
+texto1.add(20,"DC4");
+texto1.add(21,"NAK");
+texto1.add(22,"SYN");
+texto1.add(23,"ETB");
+texto1.add(24,"CAN");
+texto1.add(25,"EM");
+texto1.add(26,"SUB");
+texto1.add(27,"ESC");
+texto1.add(28,"FS");
+texto1.add(29,"GS");
+texto1.add(30,"RS");
+texto1.add(31,"US");
+texto1.add(32," ");
+texto1.add(33,"!");
+texto1.add(34,"");
+texto1.add(35,"#");
+texto1.add(36,"$");
+texto1.add(37,"%");
+texto1.add(38,"&");
+texto1.add(39,"'");
+texto1.add(40,"(");
+texto1.add(41,")");
+texto1.add(42,"*");
+texto1.add(43,"+");
+texto1.add(44,",");
+texto1.add(45,"-");
+texto1.add(46,".");
+texto1.add(47,"/");
+texto1.add(48,"0");
+texto1.add(49,"1");
+texto1.add(50,"2");
+texto1.add(51,"3");
+texto1.add(52,"4");
+texto1.add(53,"5");
+texto1.add(54,"6");
+texto1.add(55,"7");
+texto1.add(56,"8");
+texto1.add(57,"9");
+texto1.add(58,":");
+texto1.add(59,";");
+texto1.add(60,"<");
+texto1.add(61,"=");
+texto1.add(62,">");
+texto1.add(63,"?");
+texto1.add(64,"@");
+texto1.add(65,"A");
+texto1.add(66,"B");
+texto1.add(67,"C");
+texto1.add(68,"D");
+texto1.add(69,"E");
+texto1.add(70,"F");
+texto1.add(71,"G");
+texto1.add(72,"H");
+texto1.add(73,"I");
+texto1.add(74,"J");
+texto1.add(75,"K");
+texto1.add(76,"L");
+texto1.add(77,"M");
+texto1.add(78,"N");
+texto1.add(79,"O");
+texto1.add(80,"P");
+texto1.add(81,"Q");
+texto1.add(82,"R");
+texto1.add(83,"S");
+texto1.add(84,"T");
+texto1.add(85,"U");
+texto1.add(86,"V");
+texto1.add(87,"W");
+texto1.add(88,"X");
+texto1.add(89,"Y");
+texto1.add(90,"Z");
+texto1.add(91,"[");
+texto1.add(92,"");
+texto1.add(93,"]");
+texto1.add(94,"^");
+texto1.add(95,"_");
+texto1.add(96,"`");
+texto1.add(97,"a");
+texto1.add(98,"b");
+texto1.add(99,"c");
+texto1.add(100,"d");
+texto1.add(101,"e");
+texto1.add(102,"f");
+texto1.add(103,"g");
+texto1.add(104,"h");
+texto1.add(105,"i");
+texto1.add(106,"j");
+texto1.add(107,"k");
+texto1.add(108,"l");
+texto1.add(109,"m");
+texto1.add(110,"n");
+texto1.add(111,"o");
+texto1.add(112,"p");
+texto1.add(113,"q");
+texto1.add(114,"r");
+texto1.add(115,"s");
+texto1.add(116,"t");
+texto1.add(117,"u");
+texto1.add(118,"v");
+texto1.add(119,"w");
+texto1.add(120,"x");
+texto1.add(121,"y");
+texto1.add(122,"z");
+texto1.add(123,"{");
+texto1.add(124,"|");
+texto1.add(125,"}");
+texto1.add(126,"~");
+texto1.add(127,"DEL");
+texto1.add(128,"Ç");
+texto1.add(129,"ü");
+texto1.add(130,"é");
+texto1.add(131,"â");
+texto1.add(132,"ä");
+texto1.add(133,"à");
+texto1.add(134,"å");
+texto1.add(135,"ç");
+texto1.add(136,"ê");
+texto1.add(137,"ë");
+texto1.add(138,"è");
+texto1.add(139,"ï");
+texto1.add(140,"î");
+texto1.add(141,"ì");
+texto1.add(142,"Ä");
+texto1.add(143,"Å");
+texto1.add(144,"É");
+texto1.add(145,"æ");
+texto1.add(146,"Æ");
+texto1.add(147,"ô");
+texto1.add(148,"ö");
+texto1.add(149,"ò");
+texto1.add(150,"û");
+texto1.add(151,"ù");
+texto1.add(152,"ÿ");
+texto1.add(153,"Ö");
+texto1.add(154,"Ü");
+texto1.add(155,"ø");
+texto1.add(156,"£");
+texto1.add(157,"Ø");
+texto1.add(158,"×");
+texto1.add(159,"ƒ");
+texto1.add(160,"á");
+texto1.add(161,"í");
+texto1.add(162,"ó");
+texto1.add(163,"ú");
+texto1.add(164,"ñ");
+texto1.add(165,"Ñ");
+texto1.add(166,"ª");
+texto1.add(167,"º");
+texto1.add(168,"¿");
+texto1.add(169,"®");
+texto1.add(170,"¬");
+texto1.add(171,"½");
+texto1.add(172,"¼");
+texto1.add(173,"¡");
+texto1.add(174,"«");
+texto1.add(175,"»");
+texto1.add(176,"░");
+texto1.add(177,"▒");
+texto1.add(178,"▓");
+texto1.add(179,"│");
+texto1.add(180,"┤");
+texto1.add(181,"Á");
+texto1.add(182,"Â");
+texto1.add(183,"À");
+texto1.add(184,"©");
+texto1.add(185,"╣");
+texto1.add(186,"║");
+texto1.add(187,"╗");
+texto1.add(188,"╝");
+texto1.add(189,"¢");
+texto1.add(190,"¥");
+texto1.add(191,"┐");
+texto1.add(192,"└");
+texto1.add(193,"┴");
+texto1.add(194,"┬");
+texto1.add(195,"├");
+texto1.add(196,"─");
+texto1.add(197,"┼");
+texto1.add(198,"ã");
+texto1.add(199,"Ã");
+texto1.add(200,"╚");
+texto1.add(201,"╔");
+texto1.add(202,"╩");
+texto1.add(203,"╦");
+texto1.add(204,"╠");
+texto1.add(205,"═");
+texto1.add(206,"╬");
+texto1.add(207,"¤");
+texto1.add(208,"ð");
+texto1.add(209,"Ð");
+texto1.add(210,"Ê");
+texto1.add(211,"Ë");
+texto1.add(212,"È");
+texto1.add(213,"ı");
+texto1.add(214,"Í");
+texto1.add(215,"Î");
+texto1.add(216,"Ï");
+texto1.add(217,"┘");
+texto1.add(218,"┌");
+texto1.add(219,"█");
+texto1.add(220,"▄");
+texto1.add(221,"¦");
+texto1.add(222,"Ì");
+texto1.add(223,"▀");
+texto1.add(224,"Ó");
+texto1.add(225,"ß");
+texto1.add(226,"Ô");
+texto1.add(227,"Ò");
+texto1.add(228,"õ");
+texto1.add(229,"Õ");
+texto1.add(230,"µ");
+texto1.add(231,"þ");
+texto1.add(232,"Þ");
+texto1.add(233,"Ú");
+texto1.add(234,"Û");
+texto1.add(235,"Ù");
+texto1.add(236,"ý");
+texto1.add(237,"Ý");
+texto1.add(238,"¯");
+texto1.add(239,"´");
+texto1.add(240,"­");
+texto1.add(241,"±");
+texto1.add(242,"‗");
+texto1.add(243,"¾");
+texto1.add(244,"¶");
+texto1.add(245,"§");
+texto1.add(246,"÷");
+texto1.add(247,"¸");
+texto1.add(248,"°");
+texto1.add(249,"¨");
+texto1.add(250,"·");
+texto1.add(251,"¹");
+texto1.add(252,"³");
+texto1.add(253,"²");
+texto1.add(254,"■");
+texto1.add(255,"nbsp");
+
+    for(int i=0;i<=texto1.size();i++){
+    String letra1=texto1.get(i);
+    if(letra1.equals(letra)){
+    valor=i;
+    i=texto1.size()+1;
+    }
+    }
+    
+    return valor;
+    }
+  
+    
+    double cifrar(double v,double n,double e){
+        //se cifra letra a letra
+     BigInteger resul = new BigInteger((int)(v)+"");
+        
+        BigInteger n1 = BigDecimal.valueOf(n).toBigInteger();
+        BigInteger e1 = BigDecimal.valueOf(e).toBigInteger();
+    double resultado=0;
+    
+        resultado=Math.pow(v,e)%n;
+        resul=resul.modPow(e1, n1);
+        return resul.doubleValue();
+    }
+    
+    
+    
+}
